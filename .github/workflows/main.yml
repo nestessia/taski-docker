@@ -69,14 +69,10 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-          # Хорошо ли держать логин и пароль прямо в коде workflow?
-          # Нет, это нехорошо
       - name: Push to DockerHub
         # Одновременный билд и пуш образа в Docker Hub
         uses: docker/build-push-action@v4
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
           # Параметр context: ./backend/ указывает, что нужный Dockerfile 
           # находится в ./backend/
           context: ./backend/
@@ -87,7 +83,7 @@ jobs:
           # Для каждого пересобранного образа 
           # устанавливаем тег latest, чтобы потом
           # на сервере и в docker-compose.yml не указывать версию
-          tags: ваш-логин-на-docker-hub/taski_backend:latest 
+          tags: nestessia/taski_backend:latest 
   frontend_tests:
     runs-on: ubuntu-latest
 
@@ -149,7 +145,6 @@ jobs:
         with:
             context: ./gateway/
             push: true
-            # Тут вместо username должен быть ваш логин на Docker Hub
             tags: nestessia/taski_gateway:latest 
   deploy:
     runs-on: ubuntu-latest
